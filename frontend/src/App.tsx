@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import "./App.css";
-import ImageViewer from "./components/ImageViewer";
+import LeafletViewer from "./components/LeafletViewer";
 
 export default function App() {
   const [src, setSrc] = useState<string | null>("/sample.jpg");
+
+  // Example bounds for a small area (southWest, northEast)
+  const sampleBounds = [
+    [37.7036, -122.5233], // southWest: [lat, lng]
+    [37.8120, -122.3566]  // northEast: [lat, lng]
+  ];
 
   return (
     <div className="app">
       <main>
         <div className="controls" style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-          <label style={{ background: "#eef2ff", padding: "6px 10px", borderRadius: 6, cursor: "pointer" }}>
+          <label style={{ background: "#5b1c5bff", padding: "6px 10px", borderRadius: 6, cursor: "pointer" }}>
             Choose image
             <input
               type="file"
@@ -23,7 +29,7 @@ export default function App() {
           </label>
         </div>
 
-        <ImageViewer src="/noise.png" />
+        <LeafletViewer imageUrl="/sample.jpg" bounds={sampleBounds} />
       </main>
     </div>
   );
