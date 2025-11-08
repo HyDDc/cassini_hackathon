@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { MapContainer, TileLayer, ImageOverlay, useMap } from "react-leaflet";
 import type { LatLngBoundsExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { MapLibreTileLayer } from "./MapLibreTileLayer";
 
 interface Props {
   imageUrl: string;
   bounds: LatLngBoundsExpression;
-  geotiffUrl?: string;
   center?: [number, number];
   zoom?: number;
   style?: React.CSSProperties;
@@ -32,7 +32,6 @@ function FitBounds({ bounds }: { bounds: LatLngBoundsExpression }) {
 export default function LeafletViewer({
   imageUrl,
   bounds,
-  geotiffUrl,
   center,
   zoom = 2,
   style,
@@ -63,7 +62,12 @@ export default function LeafletViewer({
         className="leaflet-fullscreen-container"
       >
         {showBaseMap && (
-          <TileLayer attribution="&copy; OpenStreetMap contributors" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        
+            <MapLibreTileLayer
+  attribution='&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
+  url="https://tiles.stadiamaps.com/styles/alidade_smooth_dark.json"
+/>
+        
         )}
 
         <ImageOverlay url={imageUrl} bounds={bounds} opacity={1} />
