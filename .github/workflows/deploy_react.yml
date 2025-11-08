@@ -20,6 +20,12 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
+    # Run all shell steps from ./frontend
+    defaults:
+      run:
+        working-directory: frontend
+
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -29,6 +35,8 @@ jobs:
         with:
           node-version: lts/*
           cache: 'npm'
+          # Cache key based on the lockfile in the frontend subdir
+          cache-dependency-path: 'frontend/package-lock.json'
 
       - name: Install dependencies
         run: npm ci
@@ -36,13 +44,18 @@ jobs:
       - name: Build
         run: npm run build
 
+      # Optional: SPA fallback for client-side routes
+      - name: Add 404 fallback
+        run: cp dist/index.html dist/404.html
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: './dist'
+          # Path must be relative to the repo root for "uses" steps
+          path: 'frontend/dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
