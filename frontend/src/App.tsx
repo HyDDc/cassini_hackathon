@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import LeafletViewer from "./components/LeafletViewer";
+import { latLngBounds } from "leaflet";
 
 export default function App() {
   const [src, setSrc] = useState<string | null>("/sample.jpg");
 
   // Example bounds for a small area (southWest, northEast)
-  const sampleBounds = [
+  const sampleBounds: [number, number][] = [
     [37.7036, -122.5233], // southWest: [lat, lng]
     [37.8120, -122.3566]  // northEast: [lat, lng]
   ];
@@ -28,8 +29,7 @@ export default function App() {
             />
           </label>
         </div>
-
-        <LeafletViewer imageUrl="/sample.jpg" bounds={sampleBounds} />
+        <LeafletViewer imageUrl={src || "/sample.jpg"} bounds={latLngBounds(sampleBounds[0], sampleBounds[1])} />
       </main>
     </div>
   );
